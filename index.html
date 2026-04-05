@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>MONOCHROME | Premium Beard Ritual</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #000000;
+            --card-bg: #0a0a0a;
+            --border: #1a1a1a;
+            --accent: #ffffff;
+            --gold: #d4af37;
+            --text-muted: #888888;
+            --success: #27ae60;
+        }
+
+        /* ========= Reset & Base ========= */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .logo { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* ========= Entrance Animations ========= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========= Header ========= */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+        .cart-link { color: white; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: 1px solid #333; padding: 8px 18px; border-radius: 50px; transition: 0.3s; }
+        .cart-link:hover { background: #fff; color: #000; }
+
+        /* ========= Hero (Video Top) ========= */
+        .hero {
+            padding: 140px 5% 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 900px;
+            aspect-ratio: 16/9;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 30px; }
+
+        .btn-shop {
+            display: inline-block;
+            background: var(--accent);
+            color: #000 !important;
+            padding: 22px 60px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: 0.4s;
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        /* ========= Sections ========= */
+        .section-padding { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.2rem; color: var(--accent); }
+
+        /* Manual Grid */
+        .manual-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .manual-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .manual-card i { font-size: 3rem; color: var(--gold); margin-bottom: 20px; }
+
+        /* Description Box */
+        .description-box {
+            background: #080808; padding: 50px; border-radius: 40px; border: 1px solid var(--border);
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+        }
+        @media (max-width: 768px) { .description-box { grid-template-columns: 1fr; } }
+
+        /* Review Section (Restored) */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .review-card { background: #111; border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
+        .review-card img { width: 100%; display: block; filter: grayscale(1); transition: 0.5s; }
+        .review-card:hover img { filter: grayscale(0); }
+        .review-tag { padding: 10px; font-size: 0.8rem; color: var(--gold); text-align: center; background: #000; }
+
+        /* Product Cards */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .product-card { background: var(--card-bg); border-radius: 20px; padding: 20px; border: 1px solid var(--border); text-align: center; transition: 0.3s; }
+        .product-card:hover { border-color: var(--gold); }
+        .product-img { width: 100%; height: 280px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; }
+        
+        .quantity-selector {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-bottom: 15px; background: #000; border-radius: 50px; padding: 8px; border: 1px solid #222;
+        }
+        .qty-btn { background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; width: 30px; }
+        .qty-input { width: 40px; background: none; border: none; color: white; text-align: center; font-weight: 800; font-size: 1rem; }
+
+        .add-cart-btn, .confirm-btn {
+            width: 100%; padding: 18px; border-radius: 50px; border: none;
+            background: white; color: black; font-weight: 900; cursor: pointer; transition: 0.3s;
+        }
+        .add-cart-btn:hover { background: var(--gold); }
+
+        /* ========= Checkout ========= */
+        .checkout-area {
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px;
+            background: #050505; padding: 40px; border-radius: 30px; border: 1px solid var(--border);
+        }
+        .cart-box { background: #000; padding: 25px; border-radius: 20px; border: 1px solid var(--border); }
+        .cart-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #111; font-size: 0.9rem; }
+        
+        .order-form input, .order-form textarea {
+            width: 100%; background: #000; border: 1px solid #222; padding: 15px;
+            border-radius: 10px; color: white; margin-bottom: 15px; font-size: 1rem;
+        }
+
+        /* ========= Success Popup ========= */
+        .popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            z-index: 10000; display: none; align-items: center; justify-content: center;
+        }
+        .success-popup {
+            background: var(--card-bg); border: 1px solid var(--gold);
+            padding: 40px; border-radius: 30px; text-align: center; max-width: 400px;
+            width: 90%; transform: scale(0.8); transition: 0.3s;
+        }
+        .popup-overlay.show { display: flex; }
+        .popup-overlay.show .success-popup { transform: scale(1); }
+        .success-popup i { font-size: 4rem; color: var(--gold); margin-bottom: 15px; }
+
+        /* ========= Footer ========= */
+        footer { background: #050505; padding: 80px 5% 40px; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; text-align: left; }
+        .footer-col h4 { margin-bottom: 20px; color: var(--accent); font-size: 0.9rem; letter-spacing: 2px; }
+        .footer-col p, .footer-col a { color: var(--text-muted); display: block; margin-bottom: 10px; font-size: 0.85rem; text-decoration: none; }
+
+        /* Accordion */
+        .accordion-header { width: 100%; padding: 15px 0; background: none; border: none; color: white; text-align: left; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid #111; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: 0.3s ease-out; color: var(--text-muted); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">MONOCHROME</div>
+        <a href="#order" class="cart-link">CART (<span id="cartCount">0</span>)</a>
+    </header>
+
+    <section class="hero reveal">
+        <div class="video-container">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <h1>Command Your Style</h1>
+        <a href="#products" class="btn-shop">SHOP NOW — 50% OFF</a>
+    </section>
+
+    <section class="section-padding reveal">
+        <div class="section-title"><h2>The Ritual Guide</h2></div>
+        <div class="manual-grid">
+            <div class="manual-card">
+                <i class="fas fa-droplet"></i>
+                <h3>Step 01</h3>
+                <p>Apply 3-4 drops into your palm after a shower.</p>
+            </div>
+            <div class="manual-card">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3>Step 02</h3>
+                <p>Warm the oil by rubbing hands together for 5 seconds.</p>
+            </div>
+            <div class="manual-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>Step 03</h3>
+                <p>Massage deep into the skin and hair follicles.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding reveal">
+        <div class="description-box">
+            <div class="description-text">
+                <h2>Organic. Pure. Potent.</h2>
+                <p>Formulated with cold-pressed Jojoba and Argan oils to replicate your skin's natural moisture without a greasy finish.</p>
+            </div>
+            <div class="description-img">
+                <img src="https://images.unsplash.com/photo-1590540179852-2110a54f813a?w=600" alt="Grooming" style="width:100%; border-radius: 20px;">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding reveal">
+        <div class="section-title"><h2>The Brotherhood</h2></div>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <img src="https://via.placeholder.com/400x500/111/fff?text=WhatsApp+Feedback" alt="Review">
+                <div class="review-tag">WhatsApp Feedback</div>
+            </div>
+            <div class="review-card">
+                <img src="https://via.placeholder.com/400x500/111/fff?text=Messenger+Feedback" alt="Review">
+                <div class="review-tag">Messenger Review</div>
+            </div>
+            <div class="review-card">
+                <img src="https://via.placeholder.com/400x500/111/fff?text=Verified+Result" alt="Review">
+                <div class="review-tag">Verified Purchase</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="section-padding reveal">
+        <div class="section-title"><h2>The Laboratory</h2></div>
+        <div class="products-grid" id="productGrid"></div>
+    </section>
+
+    <section id="order" class="section-padding reveal">
+        <div class="section-title"><h2>Secure Checkout</h2></div>
+        <div class="checkout-area">
+            <div class="cart-box">
+                <h3 style="margin-bottom:15px; color:var(--gold);">Order Summary</h3>
+                <div id="cartItemsList"><p style="color: #444;">Your cart is empty.</p></div>
+                <div style="border-top: 1px solid #222; padding-top: 20px; font-size: 1.5rem; font-weight: 800;">
+                    Total: <span id="totalPrice">$0.00</span>
+                </div>
+            </div>
+            <div class="order-form">
+                <input type="text" id="name" placeholder="Full Name">
+                <input type="tel" id="phone" placeholder="WhatsApp Number">
+                <textarea id="address" placeholder="Full Delivery Address" rows="3"></textarea>
+                <button class="confirm-btn" onclick="placeOrder()">CONFIRM ORDER</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding reveal">
+        <div class="section-title"><h2>Inquiries</h2></div>
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header" onclick="toggleAcc(this)">Shipping Time? <i class="fas fa-plus"></i></button>
+                <div class="accordion-content"><p style="padding:15px 0;">We deliver within 24-48 hours inside Dhaka and 3-5 days across Bangladesh.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Monochrome Lab</h4>
+                <p>Premium grooming essentials handcrafted in small batches for the elite man.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Order Tracking</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p>📞 +880 1700 000000</p>
+                <p>📧 help@monochrome.com</p>
+                <p>💬 WhatsApp Support Available</p>
+            </div>
+            <div class="footer-col">
+                <h4>HQ</h4>
+                <p>House 12, Level 4, Banani Road 5, Dhaka, Bangladesh</p>
+            </div>
+        </div>
+        <p style="color: #444; font-size: 0.7rem; border-top: 1px solid #111; padding-top: 30px; text-align: center;">&copy; 2026 MONOCHROME | ALL RIGHTS RESERVED</p>
+    </footer>
+
+    <div class="popup-overlay" id="successPopup">
+        <div class="success-popup">
+            <i class="fas fa-check-circle"></i>
+            <h3>ORDER RECEIVED</h3>
+            <p>Thank you for choosing Monochrome. Our manager will call you shortly to confirm delivery.</p>
+            <button class="add-cart-btn" onclick="togglePopup(false)">OKAY</button>
+        </div>
+    </div>
+
+    <script>
+        // Scroll Reveal System
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Products & Cart
+        const products = [
+            { id: 1, name: "Midnight Beard Oil", price: 29, img: "https://images.unsplash.com/photo-1590159443572-c2c62f7413bc?w=400" },
+            { id: 2, name: "Conditioning Balm", price: 35, img: "https://images.unsplash.com/photo-1626285861696-9f0bf5a49c6d?w=400" },
+            { id: 3, name: "Charcoal Ritual Wash", price: 25, img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400" }
+        ];
+
+        let cart = [];
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <img src="${p.img}" class="product-img">
+                    <h3>${p.name}</h3>
+                    <div style="color:var(--gold); margin-bottom:15px; font-size:1.3rem;">$${p.price}.00</div>
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="changeQty(${p.id}, -1)">-</button>
+                        <input type="text" id="qty-${p.id}" class="qty-input" value="1" readonly>
+                        <button class="qty-btn" onclick="changeQty(${p.id}, 1)">+</button>
+                    </div>
+                    <button class="add-cart-btn" onclick="addToCart(${p.id})">Add to Order</button>
+                </div>
+            `).join('');
+        }
+
+        function changeQty(id, delta) {
+            const inp = document.getElementById(`qty-${id}`);
+            let val = parseInt(inp.value) + delta;
+            if (val < 1) val = 1;
+            inp.value = val;
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const qty = parseInt(document.getElementById(`qty-${id}`).value);
+            const existing = cart.find(i => i.id === id);
+            if (existing) existing.quantity += qty;
+            else cart.push({ ...product, quantity: qty });
+            updateCart();
+            document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateCart() {
+            const list = document.getElementById('cartItemsList');
+            const total = document.getElementById('totalPrice');
+            const count = document.getElementById('cartCount');
+            if (cart.length === 0) {
+                list.innerHTML = `<p style="color: #444;">Your cart is empty.</p>`;
+                total.innerText = "$0.00";
+                count.innerText = "0";
+                return;
+            }
+            let sum = 0, units = 0;
+            list.innerHTML = cart.map((item, idx) => {
+                sum += item.price * item.quantity;
+                units += item.quantity;
+                return `<div class="cart-item">
+                    <span>${item.name} (x${item.quantity})</span>
+                    <span>$${(item.price * item.quantity).toFixed(2)} <i class="fas fa-trash" style="margin-left:10px; cursor:pointer; color:red;" onclick="removeItem(${idx})"></i></span>
+                </div>`;
+            }).join('');
+            total.innerText = `$${sum.toFixed(2)}`;
+            count.innerText = units;
+        }
+
+        function removeItem(idx) { cart.splice(idx, 1); updateCart(); }
+
+        function togglePopup(show) { document.getElementById('successPopup').classList.toggle('show', show); }
+
+        function placeOrder() {
+            const name = document.getElementById('name').value;
+            if (!name || cart.length === 0) { alert("Please select products and fill details."); return; }
+            togglePopup(true);
+            cart = []; updateCart();
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('address').value = '';
+        }
+
+        function toggleAcc(btn) {
+            const content = btn.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        }
+
+        renderProducts();
+    </script>
+</body>
+</html>
